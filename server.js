@@ -8,8 +8,6 @@ const { createAdapter, setupPrimary } = require('@socket.io/cluster-adapter');
 const socketMain = require('./socketMain');
 
 if (cluster.isPrimary) {
-  console.log(`Master ${process.pid} is running`);
-
   const httpServer = http.createServer();
 
   setupMaster(httpServer, {
@@ -22,7 +20,7 @@ if (cluster.isPrimary) {
     serialization: 'advanced',
   });
 
-  httpServer.listen(process.env.PORT);
+  httpServer.listen(process.env.PORT || 3000);
 
   for (let i = 0; i < numCPUs; i++) {
     cluster.fork();
